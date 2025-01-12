@@ -1,5 +1,4 @@
 const puppeteer = require('puppeteer');
-const setTimeout = require('node:timers/promises');
 const fs = require('node:fs/promises');
 
 function extractItems() {
@@ -23,7 +22,7 @@ function extractItems() {
     var i = 0;
     const browser = await puppeteer.launch({headless: true});
     const page = await browser.newPage();
-    await page.goto('https://investing.einnews.com/search/AAPL/?search%5B%5D=news&search%5B%5D=press&order=&search_feed_list=yes&search_market=yes&age=90&search_site=no', { waitUntil: ['domcontentloaded'] });
+    await page.goto('https://investing.einnews.com/search/AAPL/?search%5B%5D=news&search%5B%5D=press&order=date&search_feed_list=yes&search_market=yes&age=90', { waitUntil: ['domcontentloaded'] });
     
     // if h1 is human checker, click the human checker
 
@@ -46,7 +45,7 @@ function extractItems() {
     for (let index = 1; index < 10; index++) {
       const page = await browser.newPage();
       var baseURL = "https://investing.einnews.com"
-      var searchURL = "/search/AAPL/?search%5B%5D=news&search%5B%5D=press&order=&search_feed_list=yes&search_market=yes&age=90&search_site=no&page=" + (index+1);
+      var searchURL = "/search/AAPL/?search%5B%5D=news&search%5B%5D=press&order=date&search_feed_list=yes&search_market=yes&age=90&page=" + (index+1);
       
       await page.goto(baseURL + searchURL, { waitUntil: ['domcontentloaded'] });
       await page.waitForSelector('ul.pr-feed');
