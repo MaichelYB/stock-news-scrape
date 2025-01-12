@@ -24,7 +24,7 @@ try {
                 await page.goto(url, { waitUntil: ['domcontentloaded'] });
     
                 const textsFromAllP = await page.$$eval('p', ps => ps.map(p => p.innerText));
-                const story = textsFromAllP.join("")
+                const story = textsFromAllP.join(" ")
 
                 const cleanedText = story
                     .replace(/[^\w\s]/gi, '') // Remove special characters (keeps alphanumeric and spaces)
