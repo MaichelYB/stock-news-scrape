@@ -8,7 +8,7 @@ var NASDAQ = ["MSFT", "TSLA", "GOOGL", "AMZN", "META"];
 
 (async () => {
     for (let index = 0; index < NASDAQ.length; index++) {
-        const browser = await puppeteer.launch({headless: true});
+        const browser = await puppeteer.launch({headless: false});
         const page = await browser.newPage();
         console.log("CURRENT SCRAPE: " + NASDAQ[index]);
         await page.goto('https://finance.yahoo.com/quote/'+NASDAQ[index]+'/latest-news', { waitUntil: ['domcontentloaded'] });
@@ -24,8 +24,12 @@ var NASDAQ = ["MSFT", "TSLA", "GOOGL", "AMZN", "META"];
             elements.map(e => e.querySelector("a").href),
         );
 
+        const allInputSummary = await page.$$eval('ul.stream-items > li.stream-item.story-item', elements =>
+            elements.map(e => e.querySelector("a > p.clamp").innerText),
+        );
+
         await browser.close();
-        mapURLString[NASDAQ[index]] = allInputValues;   
+        mapURLString[NASDAQ[index]] = [allInputValues, allInputSummary];
     }
 
     try {

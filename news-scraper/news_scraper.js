@@ -18,8 +18,8 @@ try {
         var allStories = [];
         const browser = await puppeteer.launch({headless: true});
         const page = await browser.newPage();
-        for (var index in jsonData[elem]) {
-            url = jsonData[elem][index];
+        for (var index in jsonData[elem][0]) {
+            url = jsonData[elem][0][index];
             try {
                 await page.goto(url, { waitUntil: ['domcontentloaded'] });
     
@@ -37,7 +37,9 @@ try {
             }
         }
         await browser.close();
-        mapStories[elem] = allStories;
+        mapStories[elem] = {}
+        mapStories[elem]["news"] = allStories;
+        mapStories[elem]["summary"] = jsonData[elem][1];
     }
 
     try {
